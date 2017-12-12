@@ -16,7 +16,7 @@ public class LoginVerification {
 		try {
 			con = datasource.getConnection();
 			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery("select userID, account, password, userName from user where account='"+account+"' ");
+			ResultSet rs = st.executeQuery("select userID, account, password, userName from user where account='"+account+"' and password='"+password+"' ");
 
 			while (rs.next()) {
 				userID = rs.getString("userID");
