@@ -41,15 +41,12 @@ public class LoginVerificationServlet extends HttpServlet {
 		
 		// 登入
 		if(state.equals("login")){
+			System.out.println("LoginVerification state : " + state + "account : " + account + "password : " + password);
+
 			loginResult = login.verification(datasource, account, password);
 	
-			//如果帳密正確，則把docterID放入session裡
-			if(loginResult.get("result").equals("登入成功")){
-				HttpSession session = request.getSession();
-				session.setAttribute("userID", loginResult.get("userID"));
-			}
 			// 回傳json型態
-			System.out.println("LoginVerification response in servlet" + loginResult);
+			System.out.println("loginResult : " + loginResult);
 			response.getWriter().write(gson.toJson(loginResult));
 		}
 		
