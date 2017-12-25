@@ -1,5 +1,13 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
+    <!--
+    這個神祕的檔案是拿來畫背景的
+    上面的標籤名稱應該淺顯易懂
+    centerColor 就是中間的顏色
+    endColor 就是最下面的顏色
+    startColor 就是最上面的顏色
+    angle 設定角度
+    -->
     <gradient
         android:angle="135"
         android:centerColor="#4CAF50"

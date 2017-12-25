@@ -8,11 +8,17 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <!--  用<include>去嵌入一個xml檔，這裡放的是主畫面 -->
     <include
         layout="@layout/app_bar_homepage"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!--  android:layout_width  設定選單拉出來的寬度 -->
+    <!--   android:layout_gravity 設定選單從左還是右拉出 (改成right就可以從右邊) -->
+    <!-- app:headerLayout 呼叫上半部xml檔 -->
+    <!-- app:menu 呼叫下半部xml檔 -->
+    <!--  標題是 NavigationView，這段就是嵌入menu的程式碼，改掉自由發揮 -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -21,5 +27,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_homepage"
         app:menu="@menu/activity_homepage_drawer" />
+
+    <!-- layout="@layout/nav_header_main"  放入讓你可以自由發揮的layout檔 -->
 
 </android.support.v4.widget.DrawerLayout>
