@@ -1,26 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_homepage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.user.surpriseu.Homepage"
     tools:showIn="@layout/app_bar_homepage">
 
+    <!--  上半部 -->
+    <!--  wrap_content 讓控制元件寬或高僅包覆內容 -->
+    <!--  fill_parent 讓控制元件寬或高佔全屏 -->
+    <!--  layout_weight 設定物件的版面所佔比例 (權重) (平均分配)
+               若是 水平排列, 則 layout_width = 數值 > layout_weight (需搭配 layout_width = WRAP_CONTENT)
+               若是 垂直排列, 則 layout_height= 數值 > layout_weight (需搭配 layout_height= WRAP_CONTENT) -->
+    <!--  android:gravity 用於此 View 裡面子物件的對齊,
+                android:layout_gravity 用於此 View 對父物件的對齊  -->
 
-    <!-- 給予FrameLayout
-    <FrameLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
-    -->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="5"
+        android:orientation="vertical" >
 
+        <LinearLayout android:id="@+id/viewPagerAdsContent"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"/>
+
+        <LinearLayout
+            android:id="@+id/viewGroupAds"
+            android:layout_below="@id/viewPagerAdsContent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-25px"
+            android:gravity="right"
+            android:orientation="horizontal" >
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- 下半部
+    android:background="#BBFFBB"-->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="0dp"
+            android:paddingRight="0dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_below="@id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!--     測試傳值是否成功      -->
+
+<!--
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -98,4 +151,6 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+    -->
+
+</LinearLayout>
