@@ -7,10 +7,14 @@ import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,11 +29,15 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Homepage extends AppCompatActivity
@@ -54,9 +62,17 @@ public class Homepage extends AppCompatActivity
     private AtomicInteger atomicIntegerAds = new AtomicInteger(0);
     private boolean isContinueAds = true;
 
+
     //切換頁面
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+
+
+
+/*
     private TabLayout tabLayoutTab;
     private ViewPager viewPagerTab;
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +95,22 @@ public class Homepage extends AppCompatActivity
 
         initViewPagerAds(); //Start ads
 
+
         //切換頁面
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+/*
         tabLayoutTab = (android.support.design.widget.TabLayout) findViewById(R.id.tabs);
         initTab();
-
+*/
 
 
         //原本的
@@ -361,7 +389,112 @@ public class Homepage extends AppCompatActivity
     }
 
     /********************************* 廣告(結束) *********************************/
-    /********************************* 切換頁面(開始) *********************************/
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.activity_pager_tab, container, false);
+            //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+            //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+            TextView title = (TextView) rootView.findViewById(R.id.item_title);
+            title.setText(String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
+
+
+            GridView gridview=(GridView) rootView.findViewById(R.id.gridview);//找到homepgae..xml中定义gridview 的id
+            gridview.setAdapter(new ImageAdapter(gridview.getContext()));//调用ImageAdapter.java
+            gridview.setOnItemClickListener(new AdapterView.OnItemClickListener(){//监听事件
+                public void onItemClick(AdapterView<?> parent, View view, int p, long id)
+                {
+                    //Toast.makeText(this, ""+p,Toast.LENGTH_SHORT).show();//显示信息;
+                    System.out.println("getArguments().getInt(ARG_SECTION_NUMBER) : " + getArguments().getInt(ARG_SECTION_NUMBER));
+                    Log.d("test","action");               }
+            });
+
+
+
+            return rootView;
+        }
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            return PlaceholderFragment.newInstance(position + 1);
+        }
+
+        @Override
+        public int getCount() {
+            // Show 4 total pages.
+            return 4;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "SECTION 1";
+                case 1:
+                    return "SECTION 2";
+                case 2:
+                    return "SECTION 3";
+                case 3:
+                    return "SECTION 4";
+            }
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /********************************* 切換頁面(開始) *********************************
 
     // 初始化切換頁面
     private void initTab(){
@@ -448,6 +581,6 @@ public class Homepage extends AppCompatActivity
 
     }
 
-    /********************************* 切換頁面(結束) *********************************/
+    ********************************* 切換頁面(結束) *********************************/
 
 }

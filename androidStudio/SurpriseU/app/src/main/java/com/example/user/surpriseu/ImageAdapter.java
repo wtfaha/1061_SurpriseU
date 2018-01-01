@@ -1,6 +1,7 @@
 package com.example.user.surpriseu;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -45,8 +46,18 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageview;
         if(convertView==null)
         {
+            //獲取屏幕像素相關訊息
+            DisplayMetrics dm = new DisplayMetrics();
+            System.out.print("dm.widthPixels : " + dm.widthPixels);
+
             imageview=new ImageView(mContext);
-            imageview.setLayoutParams(new GridView.LayoutParams(85, 85));
+
+
+
+            System.out.print("imageview : " + dm.widthPixels);
+
+
+            imageview.setLayoutParams(new GridView.LayoutParams(125, 125));
             imageview.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageview.setPadding(8,8,8,8);
         }
