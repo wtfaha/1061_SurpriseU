@@ -460,21 +460,23 @@ public class Homepage extends AppCompatActivity
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
-            return 4;
+            // Show 5 total pages.
+            return 5;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "分類";
                 case 1:
-                    return "SECTION 2";
+                    return "熱門";
                 case 2:
-                    return "SECTION 3";
+                    return "最新";
                 case 3:
-                    return "SECTION 4";
+                    return "收藏";
+                case 4:
+                    return "我的交換";
             }
             return null;
         }
