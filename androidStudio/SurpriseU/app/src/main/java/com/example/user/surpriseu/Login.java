@@ -4,12 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,17 +13,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     private EditText editTextUsername;
     private EditText editTextPassword;
     private Button buttonLogin;
@@ -98,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         //連到WebView
         Intent intent = new Intent();
-        intent.setClass(MainActivity.this, Homepage.class);    //到Main2Activity頁面
+        intent.setClass(Login.this, Homepage.class);    //到Main2Activity頁面
         Bundle bundle = new Bundle(); //不同Activity之間的資料傳遞 (Bundle)
         if(result.equals("登入成功")) {
             bundle.putString("userID", userID);

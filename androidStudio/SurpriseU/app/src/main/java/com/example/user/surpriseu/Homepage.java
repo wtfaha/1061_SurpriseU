@@ -67,6 +67,9 @@ public class Homepage extends AppCompatActivity
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
 
+    //螢幕
+    private static int intScreenHeight;
+    private static int intScreenWidth;
 
 
 /*
@@ -111,6 +114,12 @@ public class Homepage extends AppCompatActivity
         tabLayoutTab = (android.support.design.widget.TabLayout) findViewById(R.id.tabs);
         initTab();
 */
+
+        //螢幕
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        intScreenWidth = dm.widthPixels;   //螢幕的寬
+        intScreenHeight = dm.heightPixels;  //螢幕的高
 
 
         //原本的
@@ -389,6 +398,9 @@ public class Homepage extends AppCompatActivity
     }
 
     /********************************* 廣告(結束) *********************************/
+    /********************************* 切換頁面(開始) *********************************
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -398,6 +410,12 @@ public class Homepage extends AppCompatActivity
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+
+
+        private GridView gridView;
+        List<Map<String, Object>> items;
+        Map<String, Object> item;
+        SimpleAdapter adapter;
 
         public PlaceholderFragment() {
         }
@@ -425,6 +443,25 @@ public class Homepage extends AppCompatActivity
             title.setText(String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
 
 
+            //設定圖片
+
+
+            gridView = (GridView) rootView.findViewById(R.id.gridview);
+            gridView.setNumColumns(2);  //設定為兩欄
+
+            //設定grid view item
+            items = new ArrayList<>();
+            adapter = new SimpleAdapter(rootView.getContext(),items,R.layout.grid_view
+                    ,new String[]{"text","img"},new int[]{R.id.textViewGrid1,R.id.imageView2});
+
+            for(int i=0;i<getArguments().getInt(ARG_SECTION_NUMBER);i++) {
+                item = new HashMap<>();
+                item.put("text", "Num: " + i);
+                item.put("img", i);
+                items.add(item);
+            }
+            madapter();
+/*
             GridView gridview=(GridView) rootView.findViewById(R.id.gridview);//找到homepgae..xml中定义gridview 的id
             gridview.setAdapter(new ImageAdapter(gridview.getContext()));//调用ImageAdapter.java
             gridview.setOnItemClickListener(new AdapterView.OnItemClickListener(){//监听事件
@@ -435,9 +472,44 @@ public class Homepage extends AppCompatActivity
                     Log.d("test","action");               }
             });
 
-
+*/
 
             return rootView;
+        }
+
+
+        //設定grid view item
+        public void madapter(){
+            adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+                @Override
+                public boolean setViewValue(View view, Object data, String textRepresentation) {
+                    if(view.getId() == R.id.imageView2){
+                        int value = Integer.parseInt(data.toString());
+                        ((ImageView) view).setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                        if(value == 1)
+                            ((ImageView) view).setImageResource(R.drawable.sample_1);
+                        else if(value == 2)
+                            ((ImageView) view).setImageResource(R.drawable.sample_2);
+                        else if(value == 3)
+                            ((ImageView) view).setImageResource(R.drawable.sample_3);
+                        else if(value == 4)
+                            ((ImageView) view).setImageResource(R.drawable.sample_4);
+                        else if(value == 5)
+                            ((ImageView) view).setImageResource(R.drawable.sample_5);
+
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            gridView.setAdapter(adapter);
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(view.getContext(), "你選擇了" + position, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -481,6 +553,7 @@ public class Homepage extends AppCompatActivity
             return null;
         }
     }
+    /********************************* 切換頁面(結束) *********************************
 
 
 

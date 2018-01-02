@@ -9,5 +9,6 @@ public class pagerTab extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pager_tab);
+        System.out.println("pagerTab.java");
     }
 }
