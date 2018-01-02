@@ -110,6 +110,13 @@ public class Homepage extends AppCompatActivity
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        // tab選擇變為黑色，沒有選擇則為灰色
+        tabLayout.setTabTextColors(Color.GRAY, Color.BLACK);
+
+        // 設置一開始顯示的tab頁面
+        mViewPager.setCurrentItem(1);
+
 /*
         tabLayoutTab = (android.support.design.widget.TabLayout) findViewById(R.id.tabs);
         initTab();
