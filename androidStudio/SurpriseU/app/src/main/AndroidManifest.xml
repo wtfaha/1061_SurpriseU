@@ -4,6 +4,7 @@
 
     <!-- 網路 -->
     <uses-permission android:name="android.permission.INTERNET" />
+
     <!-- 增加使用記憶卡的權限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 

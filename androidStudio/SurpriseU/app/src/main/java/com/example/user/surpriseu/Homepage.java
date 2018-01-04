@@ -1,6 +1,8 @@
 package com.example.user.surpriseu;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -516,7 +518,7 @@ public class Homepage extends AppCompatActivity
                 item = new HashMap<>();
                 try {
                     item.put("text", titleList.get(i));
-                    item.put("img", i);
+                    item.put("img", changeIDList.get(i));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -548,9 +550,24 @@ public class Homepage extends AppCompatActivity
                 @Override
                 public boolean setViewValue(View view, Object data, String textRepresentation) {
                     if(view.getId() == R.id.imageView2){
-                        int value = Integer.parseInt(data.toString());
+                        final int value = Integer.parseInt(data.toString());
                         ((ImageView) view).setScaleType(ImageView.ScaleType.CENTER_CROP);
 
+                        //建立一個AsyncTask執行緒進行圖片讀取動作，並帶入圖片連結網址路徑
+                        new AsyncTask<String, Void, Bitmap>()
+                        {
+                            @Override
+                            protected Bitmap doInBackground(String... params) {
+                                String url="http://140.121.197.130:8004/SurpriseU/HomepageServlet?state=getPhoto&changeID="+value+"";
+                                return ImgUtils.getBitmapFromURL(url);
+                            }
+
+                            protected  void onPostExecute(Bitmap result){
+                                ((ImageView) view).setImageBitmap(result);
+                                super.onPostExecute(result);}
+                        }.execute("圖片連結網址路徑");
+
+                        /*
                         if(value == 1)
                             ((ImageView) view).setImageResource(R.drawable.sample_1);
                         else if(value == 2)
@@ -561,6 +578,7 @@ public class Homepage extends AppCompatActivity
                             ((ImageView) view).setImageResource(R.drawable.sample_4);
                         else if(value == 5)
                             ((ImageView) view).setImageResource(R.drawable.sample_5);
+                        */
 
                         return true;
                     }
@@ -618,8 +636,6 @@ public class Homepage extends AppCompatActivity
         }
     }
     /********************************* 切換頁面(結束) *********************************/
-
-
 
 
 
