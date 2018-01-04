@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         editTextUsername = (EditText) this.findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) this.findViewById(R.id.editTextPassword);

@@ -36,4 +36,12 @@
 		<servlet-name>LoginVerificationServlet</servlet-name>
 		<url-pattern>/LoginVerificationServlet</url-pattern>
 	</servlet-mapping>
+	  <servlet>
+    <servlet-name>HomepageServlet</servlet-name>
+    <servlet-class>u.controller.HomepageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HomepageServlet</servlet-name>
+    <url-pattern>/HomepageServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
