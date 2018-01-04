@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -29,10 +28,20 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +51,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Homepage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    //連接後端
+    private static RequestQueue queue;
+    private static JSONArray changeIDList;
+    private static JSONArray titleList;
 
     //登入
     private TextView textViewUserID;
@@ -81,6 +95,10 @@ public class Homepage extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+
+        //連接後端
+        queue = Volley.newRequestQueue(this);       //HTTP Request處理工具，取得volley的request物件
+
 
         //登入
         //textViewUserID = (TextView) findViewById(R.id.textView2);
@@ -405,7 +423,7 @@ public class Homepage extends AppCompatActivity
     }
 
     /********************************* 廣告(結束) *********************************/
-    /********************************* 切換頁面(開始) *********************************
+    /********************************* 切換頁面(開始) *********************************/
 
 
     /**
@@ -451,8 +469,6 @@ public class Homepage extends AppCompatActivity
 
 
             //設定圖片
-
-
             gridView = (GridView) rootView.findViewById(R.id.gridview);
             gridView.setNumColumns(2);  //設定為兩欄
 
@@ -461,12 +477,53 @@ public class Homepage extends AppCompatActivity
             adapter = new SimpleAdapter(rootView.getContext(),items,R.layout.grid_view
                     ,new String[]{"text","img"},new int[]{R.id.textViewGrid1,R.id.imageView2});
 
-            for(int i=0;i<getArguments().getInt(ARG_SECTION_NUMBER);i++) {
+
+            //取得首頁後端
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://140.121.197.130:8004/SurpriseU/HomepageServlet?state=getHomepageInfo",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                System.out.println("response : " + response);
+
+                                JSONObject jsonObject=new JSONObject(response);      //放入JSONObject
+                                changeIDList=jsonObject.getJSONArray("changeIDList");
+                                titleList=jsonObject.getJSONArray("titleList");
+
+                                System.out.println("jsonObject : " + jsonObject);
+                                System.out.println("changeIDList : " + changeIDList);
+                                //System.out.println("changeIDList : " + changeIDList.get(0));
+                                System.out.println("titleList : " + titleList);
+
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            //display();
+                        }
+                    }, new Response.ErrorListener() {
+                // @Override
+                public void onErrorResponse(VolleyError error) {    //錯誤訊息
+                }
+            });
+            queue.add(stringRequest);   //把request丟進queue(佇列)
+
+            System.out.println("test changeIDList : " + changeIDList);
+
+            //置放圖片及標題
+            for(int i=0;i<changeIDList.length();i++){
                 item = new HashMap<>();
-                item.put("text", "Num: " + i);
-                item.put("img", i);
+                try {
+                    item.put("text", titleList.get(i));
+                    item.put("img", i);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 items.add(item);
             }
+
             madapter();
 /*
             GridView gridview=(GridView) rootView.findViewById(R.id.gridview);//找到homepgae..xml中定义gridview 的id
@@ -560,14 +617,7 @@ public class Homepage extends AppCompatActivity
             return null;
         }
     }
-    /********************************* 切換頁面(結束) *********************************
-
-
-
-
-
-
-
+    /********************************* 切換頁面(結束) *********************************/
 
 
 
