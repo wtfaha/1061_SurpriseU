@@ -1,11 +1,14 @@
 package com.example.user.surpriseu;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -45,10 +48,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Homepage extends AppCompatActivity
@@ -57,7 +66,10 @@ public class Homepage extends AppCompatActivity
     //連接後端
     private static RequestQueue queue;
     private static JSONArray changeIDList;
-    private static JSONArray titleList;
+    private JSONArray titleList;
+    private static String[] title;
+    private static String[] changeID;
+
 
     //登入
     private TextView textViewUserID;
@@ -101,6 +113,43 @@ public class Homepage extends AppCompatActivity
         //連接後端
         queue = Volley.newRequestQueue(this);       //HTTP Request處理工具，取得volley的request物件
 
+        System.out.println("@@@@@準備取得首頁後端 2");
+        //取得首頁後端
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://140.121.197.130:8004/SurpriseU/HomepageServlet?state=getHomepageInfo",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            System.out.println("@@@@@取得首頁後端response : " + response);
+
+                            JSONObject jsonObject=new JSONObject(response);      //放入JSONObject
+                            changeIDList=jsonObject.getJSONArray("changeIDList");
+                            titleList=jsonObject.getJSONArray("titleList");
+
+                            System.out.println("jsonObject : " + jsonObject);
+                            System.out.println("changeIDList : " + changeIDList);
+                            //System.out.println("changeIDList : " + changeIDList.get(0));
+                            System.out.println("titleList : " + titleList);
+
+                            changeID = new String[changeIDList.length()];
+                            title = new String[titleList.length()];
+                            for(int i=0;i<changeIDList.length();i++){
+                                title[i]= (String) titleList.get(i);
+                                changeID[i]= (String) changeIDList.get(i);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        //display();
+                    }
+                }, new Response.ErrorListener() {
+            // @Override
+            public void onErrorResponse(VolleyError error) {    //錯誤訊息
+            }
+        });
+        queue.add(stringRequest);   //把request丟進queue(佇列)
 
         //登入
         //textViewUserID = (TextView) findViewById(R.id.textView2);
@@ -444,6 +493,7 @@ public class Homepage extends AppCompatActivity
         Map<String, Object> item;
         SimpleAdapter adapter;
 
+
         public PlaceholderFragment() {
         }
 
@@ -466,9 +516,16 @@ public class Homepage extends AppCompatActivity
             //TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             //textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
-            TextView title = (TextView) rootView.findViewById(R.id.item_title);
-            title.setText(String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
+            // 主线程不能添加网络访问 方法一：
+            if (android.os.Build.VERSION.SDK_INT > 9) {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                        .permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+            }
 
+
+            final TextView titleTest = (TextView) rootView.findViewById(R.id.item_title);
+            titleTest.setText(String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
 
             //設定圖片
             gridView = (GridView) rootView.findViewById(R.id.gridview);
@@ -479,52 +536,25 @@ public class Homepage extends AppCompatActivity
             adapter = new SimpleAdapter(rootView.getContext(),items,R.layout.grid_view
                     ,new String[]{"text","img"},new int[]{R.id.textViewGrid1,R.id.imageView2});
 
+            System.out.print("@@@測試抓不抓地到changeID : ");
+            System.out.println(changeID[1]);
+            System.out.print("@@@測試抓不抓地到changeIDList : ");
+            System.out.println(changeIDList.length());
 
-            //取得首頁後端
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://140.121.197.130:8004/SurpriseU/HomepageServlet?state=getHomepageInfo",
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                System.out.println("response : " + response);
-
-                                JSONObject jsonObject=new JSONObject(response);      //放入JSONObject
-                                changeIDList=jsonObject.getJSONArray("changeIDList");
-                                titleList=jsonObject.getJSONArray("titleList");
-
-                                System.out.println("jsonObject : " + jsonObject);
-                                System.out.println("changeIDList : " + changeIDList);
-                                //System.out.println("changeIDList : " + changeIDList.get(0));
-                                System.out.println("titleList : " + titleList);
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            //display();
-                        }
-                    }, new Response.ErrorListener() {
-                // @Override
-                public void onErrorResponse(VolleyError error) {    //錯誤訊息
-                }
-            });
-            queue.add(stringRequest);   //把request丟進queue(佇列)
-
-            System.out.println("test changeIDList : " + changeIDList);
 
             //置放圖片及標題
-            for(int i=0;i<changeIDList.length();i++){
-                item = new HashMap<>();
-                try {
-                    item.put("text", titleList.get(i));
-                    item.put("img", changeIDList.get(i));
+            for(int i=0;i<changeID.length;i++){
+                item = new HashMap<String, Object>();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                item.put("text", title[i]);
+                item.put("img",changeID[i]);
+
+                //item.put("img",bm);
+                    //item.put("img", ImgUtils.getBitmapFromURL("http://140.121.197.130:8004/SurpriseU/HomepageServlet?state=getPhoto&changeID=2"));
                 items.add(item);
+
             }
+
 
             madapter();
 /*
@@ -549,23 +579,15 @@ public class Homepage extends AppCompatActivity
             adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
                 @Override
                 public boolean setViewValue(View view, Object data, String textRepresentation) {
+                    // 檢查是否是ImageView和Bitamp
                     if(view.getId() == R.id.imageView2){
-                        final int value = Integer.parseInt(data.toString());
+                        int value = Integer.parseInt(data.toString());
                         ((ImageView) view).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        ((ImageView) view).setImageBitmap(ImgUtils.getBitmapFromURL("http://140.121.197.130:8004/SurpriseU/HomepageServlet?state=getPhoto&changeID="+value));
 
-                        //建立一個AsyncTask執行緒進行圖片讀取動作，並帶入圖片連結網址路徑
-                        new AsyncTask<String, Void, Bitmap>()
-                        {
-                            @Override
-                            protected Bitmap doInBackground(String... params) {
-                                String url="http://140.121.197.130:8004/SurpriseU/HomepageServlet?state=getPhoto&changeID="+value+"";
-                                return ImgUtils.getBitmapFromURL(url);
-                            }
+                        return true;
+                    }
 
-                            protected  void onPostExecute(Bitmap result){
-                                ((ImageView) view).setImageBitmap(result);
-                                super.onPostExecute(result);}
-                        }.execute("圖片連結網址路徑");
 
                         /*
                         if(value == 1)
@@ -579,13 +601,14 @@ public class Homepage extends AppCompatActivity
                         else if(value == 5)
                             ((ImageView) view).setImageResource(R.drawable.sample_5);
                         */
-
+/*
                         return true;
                     }
+                    */
                     return false;
                 }
             });
-            gridView.setAdapter(adapter);
+            gridView.setAdapter(adapter);   //添加並顯示
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -636,10 +659,6 @@ public class Homepage extends AppCompatActivity
         }
     }
     /********************************* 切換頁面(結束) *********************************/
-
-
-
-
 
 
     /********************************* 切換頁面(開始) *********************************
