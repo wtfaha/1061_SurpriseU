@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -37,10 +38,14 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -50,6 +55,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -60,11 +66,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static java.net.Proxy.Type.HTTP;
+
 public class Homepage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     //連接後端
     private static RequestQueue queue;
+
     private static JSONArray changeIDList;
     private JSONArray titleList;
     private static String[] title;
@@ -120,9 +129,12 @@ public class Homepage extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         try {
-                            System.out.println("@@@@@取得首頁後端response : " + response);
+                            //将数据转码为UTF-8//解决中文乱码问题
+                            String newResponse = new String(response.getBytes("ISO-8859-1"),"UTF-8");
+                            System.out.println("@@@@@取得首頁後端rnewResponse : " + newResponse);
 
-                            JSONObject jsonObject=new JSONObject(response);      //放入JSONObject
+                            System.out.println("@@@@@取得首頁後端response : " + response);
+                            JSONObject jsonObject=new  JSONObject(response);      //放入JSONObject
                             changeIDList=jsonObject.getJSONArray("changeIDList");
                             titleList=jsonObject.getJSONArray("titleList");
 
@@ -140,12 +152,14 @@ public class Homepage extends AppCompatActivity
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
                         }
 
                         //display();
                     }
                 }, new Response.ErrorListener() {
-            // @Override
+            @Override
             public void onErrorResponse(VolleyError error) {    //錯誤訊息
             }
         });
