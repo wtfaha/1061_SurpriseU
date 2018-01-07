@@ -65,7 +65,7 @@ public class AttackActivity extends AppCompatActivity {
                             secondHand="n";
                     }
                     String maxPeople=maxPeopleInput.getText().toString();
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.1.109:8080/SurpriseU/attackServlet?name="+name+"&type="+type+"&lowPrice="+lowPrice+"&highPrice="+highPrice+"&location="+location+"&secondHand="+secondHand+"&maxPeople="+maxPeople+"",
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://140.121.197.130:8004/SurpriseU/attackServlet?name="+name+"&type="+type+"&lowPrice="+lowPrice+"&highPrice="+highPrice+"&location="+location+"&secondHand="+secondHand+"&maxPeople="+maxPeople+"",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -76,7 +76,7 @@ public class AttackActivity extends AppCompatActivity {
                                         result = jsonObject.getString("result");
                                         changeID=jsonObject.getString("changeID");
                                         if(result.equals("success")) {
-                                            Intent intent = new Intent();
+
                                             Bundle bd = new Bundle();
                                             bd.putString("name", nameInput.getText().toString());
                                             bd.putString("type", typeInput.getSelectedItem().toString());
@@ -90,9 +90,7 @@ public class AttackActivity extends AppCompatActivity {
                                                 case R.id.secondNo:
                                                     bd.putString("secondHand", "否");
                                             }
-                                            intent.setClass(AttackActivity.this, changeDetail.class);
-                                            intent.putExtras(bd);
-                                            startActivity(intent);
+                                            display(bd);
                                         }else {
                                             System.out.println("result : " + result);
                                         }
@@ -118,7 +116,15 @@ public class AttackActivity extends AppCompatActivity {
                             })
                             .show();
                 }
+
             }
         });
+    }
+
+    public void display(Bundle bd){
+        Intent intent = new Intent();
+        intent.setClass(AttackActivity.this, changeDetail.class);
+        intent.putExtras(bd);
+        startActivity(intent);
     }
 }

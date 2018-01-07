@@ -44,4 +44,20 @@
     <servlet-name>HomepageServlet</servlet-name>
     <url-pattern>/HomepageServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+		<servlet-name>attackServlet</servlet-name>
+		<servlet-class>u.controller.attackServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>attackServlet</servlet-name>
+		<url-pattern>/attackServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>changeDetailServlet</servlet-name>
+		<servlet-class>u.controller.changeDetailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>changeDetailServlet</servlet-name>
+		<url-pattern>/changeDetailServlet</url-pattern>
+	</servlet-mapping>
 </web-app>

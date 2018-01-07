@@ -17,17 +17,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class changeDetail extends AppCompatActivity {
-    private TextView nowpeople,type,price,location,secondHand,process,messegeBoard;
+    private TextView nowpeople,price,location,secondHand,process,messegeBoard;
     private Button joinButton;
     private RequestQueue queue;
-    private String changeID;
+    private String changeID,type;
     private ImageView picture;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_detail);
         nowpeople=(TextView)findViewById(R.id.nowPeople);
-        type=(TextView)findViewById(R.id.type);
         price=(TextView)findViewById(R.id.price);
         location=(TextView)findViewById(R.id.location);
         secondHand=(TextView)findViewById(R.id.secondHand);
@@ -35,7 +34,7 @@ public class changeDetail extends AppCompatActivity {
         picture=(ImageView)findViewById(R.id.picture);
         messegeBoard=(TextView)findViewById(R.id.messageBoard);
         Bundle bd=getIntent().getExtras();
-        type.setText(bd.getString("type"));
+        type=bd.getString("type");
         price.setText(bd.getString("lowPrice")+"~"+bd.getString("highPrice"));
         location.setText(bd.getString("location"));
         changeID=bd.getString("changeID");

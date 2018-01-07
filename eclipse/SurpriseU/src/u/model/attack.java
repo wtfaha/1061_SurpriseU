@@ -35,17 +35,19 @@ public class attack {
 					+ " values ('"+max+"','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00')";
 			int insertState=st.executeUpdate(insertStateSQL);
 			System.out.println("Listener insertState : " + insertState);
+			
 			String insertChangeSQL="insert into exchange(changeID,organiser,participant,stateID) values ('"+max+"','1','1','"+max+"')";
 			int insertChange=st.executeUpdate(insertChangeSQL);
 			System.out.println("Listener insertChange : " + insertChange);
+			
 			ResultSet selectTypeID=st.executeQuery("select typeID from exchangetype where typeName='"+type+"'");
 			while(selectTypeID.next()){
 				typeID=selectTypeID.getString("typeID");
 			}
 			selectTypeID.close();
 			System.out.println("secondHand : " + secondHand);
-			String insertChangeDetailSQL="insert into exchangedetail(changeID,title,typeID,lowPrice,highPrice,participated,location,secondHand,maxPeople,mention,picture)"
-					+ " values ('"+max+"','"+name+"','"+typeID+"','"+lowPrice+"','"+highPrice+"','0','"+location+"','"+secondHand+"','"+maxPeople+"','','')";
+			String insertChangeDetailSQL="insert into exchangedetail(changeID,title,typeID,lowPrice,highPrice,location,secondHand,maxPeople,mention,picture)"
+					+ " values ('"+max+"','"+name+"','"+typeID+"','"+lowPrice+"','"+highPrice+"','"+location+"','"+secondHand+"','"+maxPeople+"','','')";
 			int insertChangeDetail=st.executeUpdate(insertChangeDetailSQL);
 			if(insertChange==1&&insertChangeDetail==1)
 				result="success";
