@@ -6,4 +6,21 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string-array name="typeList">
+        <item>食物</item>
+        <item>日常用品</item>
+        <item>衣物飾品</item>
+        <item>擺設玩具</item>
+        <item>food</item>
+        <item>cloths</item>
+    </string-array>
+    <string-array name="locationList">
+        <item>北部</item>
+        <item>中部</item>
+        <item>南部</item>
+        <item>東部</item>
+        <item>taipei</item>
+        <item>taoyuan</item>
+    </string-array>
 </resources>

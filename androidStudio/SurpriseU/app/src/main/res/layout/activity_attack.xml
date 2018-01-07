@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.user.surpriseu.AttackActivity">
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="90dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:text="標題"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/nameInput"
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:ems="10"
+                />
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/type"
+                android:layout_width="90dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:text="分類"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/typeInput"
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:entries="@array/typeList"
+                android:ems="10" />
+
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="50dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="20dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.68"
+                android:text="價格"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/lowPrice"
+                android:layout_width="10dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.48"
+                android:ems="10"
+                android:inputType="number|numberSigned|numberDecimal"
+                />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="10dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.42"
+                android:text="~"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/highPrice"
+                android:layout_width="10dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number|numberSigned|numberDecimal"
+                />
+
+        </LinearLayout>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="90dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:text="地區"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:id="@+id/locationInput"
+                android:layout_width="305dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:entries="@array/locationList" />
+
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/secondHand"
+                android:layout_width="270dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:text="是否接受二手"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <RadioGroup
+                android:id="@+id/secondHandInput"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal|center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/secondYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="是" />
+
+                <RadioButton
+                    android:id="@+id/secondNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="否" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/maxPeople"
+            android:layout_width="270dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:text="最大參加人數"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/maxPeopleInput"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number" />
+        </LinearLayout>
+    </TableRow>
+    <TableRow>
+        <CheckBox android:id="@+id/agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="我已詳閱並同意使用者服務條款" />
+    </TableRow>
+    <TableRow>
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="match_parent"
+            android:layout_height="69dp"
+            android:text="送出" />
+    </TableRow>
+
+</TableLayout>
