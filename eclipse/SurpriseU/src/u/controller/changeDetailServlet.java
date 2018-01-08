@@ -43,25 +43,31 @@ public class changeDetailServlet extends HttpServlet {
 			response.getWriter().write(gson.toJson(Result));
 		} else if (state.equals("getPhoto")) {
 			response.setContentType("image/*");
-
+			
 			InputStream inputStream = null;
 			OutputStream outStream = null;
-			inputStream = detail.getPhoto(datasource, changeID, typeID);
+			
+			inputStream = changeDetail.getPhoto(datasource, changeID, typeID);
 			outStream = response.getOutputStream();
+		    	
 			byte[] buffer = new byte[BUFFER_SIZE];
 			int bytesRead = -1;
-
-			if (inputStream != null) {
-				while ((bytesRead = inputStream.read(buffer)) != -1) {
-					outStream.write(buffer, 0, bytesRead);
-				}
+		    
+			if(inputStream!=null){
+		    	while ((bytesRead = inputStream.read(buffer)) != -1) {
+		    		outStream.write(buffer, 0, bytesRead);
+		    	}
 			}
-			if (inputStream != null) {
+			
+			if (inputStream != null){
 				inputStream.close();
+				//System.out.println("顯示照片inputStream.close()");
 			}
+			
 			if (outStream != null) {
 				outStream.close();
-			}
+				//System.out.println("顯示照片outStream.close()");
+			}          
 		}
 
 	}

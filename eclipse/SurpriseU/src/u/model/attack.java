@@ -17,9 +17,9 @@ public class attack {
 		String result="error";
 		Connection con=null;
 		String changeID="";
+		String typeID="1";
 		try{
 			String max="1";
-			String typeID="1";
 			con = datasource.getConnection();
 			Statement st=con.createStatement();
 			ResultSet selectChangeID=st.executeQuery("select changeID from exchange");
@@ -59,6 +59,7 @@ public class attack {
 		      if (con!=null) try {con.close();}catch (Exception ignore) {}
 		}
 		attackResult.put("changeID", changeID);
+		attackResult.put("typeID", typeID);
 		attackResult.put("result", result);
 		return attackResult;
 	}

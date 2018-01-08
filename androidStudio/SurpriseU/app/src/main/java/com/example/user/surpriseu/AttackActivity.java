@@ -29,7 +29,7 @@ public class AttackActivity extends AppCompatActivity {
     private CheckBox agree;
     private RadioGroup secondHandInput;
     private Button submit;
-    private String result,changeID;
+    private String result,changeID,typeID;
     private RequestQueue queue;
 
     @Override
@@ -65,7 +65,7 @@ public class AttackActivity extends AppCompatActivity {
                             secondHand="n";
                     }
                     String maxPeople=maxPeopleInput.getText().toString();
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://140.121.197.130:8004/SurpriseU/attackServlet?name="+name+"&type="+type+"&lowPrice="+lowPrice+"&highPrice="+highPrice+"&location="+location+"&secondHand="+secondHand+"&maxPeople="+maxPeople+"",
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.137.28:8080/SurpriseU/attackServlet?name="+name+"&type="+type+"&lowPrice="+lowPrice+"&highPrice="+highPrice+"&location="+location+"&secondHand="+secondHand+"&maxPeople="+maxPeople+"",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -75,11 +75,12 @@ public class AttackActivity extends AppCompatActivity {
                                         JSONObject jsonObject = new JSONObject(response);
                                         result = jsonObject.getString("result");
                                         changeID=jsonObject.getString("changeID");
+                                        typeID=jsonObject.getString("typeID");
                                         if(result.equals("success")) {
 
                                             Bundle bd = new Bundle();
                                             bd.putString("name", nameInput.getText().toString());
-                                            bd.putString("type", typeInput.getSelectedItem().toString());
+                                            bd.putString("typeID", typeID);
                                             bd.putString("price", lowPriceInput.getText().toString() + "~" + highPriceInput.getText().toString());
                                             bd.putString("location", locationInput.getSelectedItem().toString());
                                             bd.putString("maxPeople",maxPeopleInput.getText().toString());

@@ -65,16 +65,20 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:text="進度條"/>
+        <TextView
+            android:id="@+id/mention"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:text="提醒"/>
 
         <TextView
             android:id="@+id/messageBoard"
             android:layout_width="match_parent"
-            android:layout_height="226dp"
+            android:layout_height="166dp"
             android:text="留言板" />
 
 
-
-            <Button
+        <Button
                 android:id="@+id/joinButton"
                 android:layout_width="145dp"
                 android:layout_height="wrap_content"
