@@ -28,9 +28,10 @@ public class changeDetailServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		
 		String state = request.getParameter("state");
 		String changeID = request.getParameter("changeID");
-		String typeID = request.getParameter("typeID");
 
 		Gson gson = new Gson();
 		HashMap Result = new HashMap();
@@ -47,7 +48,7 @@ public class changeDetailServlet extends HttpServlet {
 			InputStream inputStream = null;
 			OutputStream outStream = null;
 			
-			inputStream = changeDetail.getPhoto(datasource, changeID, typeID);
+			inputStream = changeDetail.getPhoto(datasource, changeID);
 			outStream = response.getOutputStream();
 		    	
 			byte[] buffer = new byte[BUFFER_SIZE];

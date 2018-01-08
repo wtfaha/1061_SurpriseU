@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 import com.sun.jmx.snmp.SnmpUnknownSubSystemException;
 
 public class attack {
-	public HashMap att(DataSource datasource,String name,String type,String lowPrice,String highPrice,String location,String secondHand,String maxPeople){
+	public HashMap att(DataSource datasource,String organiser,String name,String type,String lowPrice,String highPrice,String location,String secondHand,String maxPeople){
 		
 		HashMap attackResult=new HashMap();
 		String result="error";
@@ -36,7 +36,7 @@ public class attack {
 			int insertState=st.executeUpdate(insertStateSQL);
 			System.out.println("Listener insertState : " + insertState);
 			
-			String insertChangeSQL="insert into exchange(changeID,organiser,participant,stateID) values ('"+max+"','1','1','"+max+"')";
+			String insertChangeSQL="insert into exchange(changeID,organiser,participant,stateID) values ('"+max+"','"+organiser+"','{\"userID\": ["+organiser+"]}','"+max+"')";
 			int insertChange=st.executeUpdate(insertChangeSQL);
 			System.out.println("Listener insertChange : " + insertChange);
 			

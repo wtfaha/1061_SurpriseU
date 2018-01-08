@@ -24,6 +24,9 @@ public class attackServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		
+		String organiser=request.getParameter("organiser");
 		String name=request.getParameter("name");
 		String type=request.getParameter("type");
 		String lowPrice=request.getParameter("lowPrice");
@@ -38,7 +41,7 @@ public class attackServlet extends HttpServlet {
 		DataSource datasource = (DataSource) getServletContext().getAttribute("db");
 		
 		attack at=new attack();
-		Result=at.att(datasource, name, type, lowPrice, highPrice, location, secondHand,maxPeople);
+		Result=at.att(datasource, organiser,  name, type, lowPrice, highPrice, location, secondHand,maxPeople);
 		
 		System.out.println("Result : " + Result);
 		response.getWriter().write(gson.toJson(Result));

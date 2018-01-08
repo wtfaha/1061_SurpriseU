@@ -1,5 +1,6 @@
 package com.example.user.surpriseu;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class changeDetail extends AppCompatActivity {
+    //讀資料
+    private SharedPreferences settings;
+    private static final String data = "DATA";
+    private  String userID;
+
     private TextView nowpeople,price,location,secondHand,process,messegeBoard,mention;
     private Button joinButton;
     private RequestQueue queue;
@@ -27,6 +33,10 @@ public class changeDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_detail);
+
+        //讀資料
+        readData();
+
         nowpeople=(TextView)findViewById(R.id.nowPeople);
         price=(TextView)findViewById(R.id.price);
         location=(TextView)findViewById(R.id.location);
@@ -37,15 +47,10 @@ public class changeDetail extends AppCompatActivity {
         mention=(TextView)findViewById(R.id.mention);
 
         Bundle bd=getIntent().getExtras();
-        typeID=bd.getString("typeID");
-        price.setText(bd.getString("price"));
-        secondHand.setText(bd.getString("secondHand"));
-        location.setText(bd.getString("location"));
         changeID=bd.getString("changeID");
-        maxPeople=bd.getString("maxPeople");
 
         queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.137.28:8080/SurpriseU/changeDetailServlet?changeID="+changeID+"&state=getDetail",
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://140.121.197.130:8004/SurpriseU/changeDetailServlet?changeID="+changeID+"&state=getDetail",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -55,6 +60,10 @@ public class changeDetail extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             result=jsonObject.getString("result");
                             if(result.equals("success")){
+                                price.setText(jsonObject.getString("lowPrice") + "~" + jsonObject.getString("highPrice"));
+                                secondHand.setText(jsonObject.getString("secondHand"));
+                                location.setText(jsonObject.getString("location"));
+                                maxPeople=jsonObject.getString("maxPeople");
                                /* nowPeople=jsonObject.getString("nowPeople");
                                 nowpeople.setText("目前人數 :  "+nowPeople+"/"+maxPeople);*/
                             }
@@ -78,6 +87,12 @@ public class changeDetail extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        picture.setImageBitmap(ImgUtils.getBitmapFromURL("http://192.168.137.28:8080/SurpriseU/changeDetailServlet?state=getPhoto&changeID="+changeID+"&typeID="+typeID));
+        picture.setImageBitmap(ImgUtils.getBitmapFromURL("http://140.121.197.130:8004/SurpriseU/changeDetailServlet?state=getPhoto&changeID="+changeID));
+    }
+
+    //讀取資料
+    public void readData(){
+        settings = getSharedPreferences(data,0);
+        userID =  settings.getString("userID", "");
     }
 }

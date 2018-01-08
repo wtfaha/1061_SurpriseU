@@ -1,6 +1,9 @@
 package com.example.user.surpriseu;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.StrictMode;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +21,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Login extends AppCompatActivity {
+
+    //存資料
+    private SharedPreferences settings;
+    private static final String data = "DATA";
+
+    //登入
     private EditText editTextUsername;
     private EditText editTextPassword;
     private Button buttonLogin;
@@ -34,6 +43,13 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // 主线程不能添加网络访问 方法一：
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         editTextUsername = (EditText) this.findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) this.findViewById(R.id.editTextPassword);
         buttonLogin = (Button) this.findViewById(R.id.buttonLogin);
@@ -42,7 +58,7 @@ public class Login extends AppCompatActivity {
 
         queue = Volley.newRequestQueue(this);       //HTTP Request處理工具，取得volley的request物件
         buttonLogin.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 String account = String.format(editTextUsername.getText().toString());
                 String password = String.format(editTextPassword.getText().toString());
 
@@ -71,7 +87,7 @@ public class Login extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                display();
+                                display(v);
                             }
                         }, new Response.ErrorListener() {
                     // @Override
@@ -83,20 +99,33 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    public void display(){
+    public void display(View v){
         System.out.println("display");
 
         //連到WebView
         Intent intent = new Intent();
-        intent.setClass(Login.this, Homepage.class);    //到Main2Activity頁面
+        intent.setClass(Login.this, Homepage.class);    //到homepage頁面
         Bundle bundle = new Bundle(); //不同Activity之間的資料傳遞 (Bundle)
         if(result.equals("登入成功")) {
+            saveData(); //存資料
             bundle.putString("userID", userID);
             bundle.putString("userName", userName);
-        }
-        bundle.putString("result", result);
+            bundle.putString("result", result);
 
-        intent.putExtras(bundle);
-        startActivity(intent);  //開啟homepage活動
+            intent.putExtras(bundle);
+            startActivity(intent);  //開啟homepage活動
+        }
+        else{
+            Snackbar.make(v, "登入失敗", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+    }
+
+    //存資料
+    public void saveData(){
+        settings = getSharedPreferences(data,MODE_PRIVATE); //MODE_PRIVATE 只允許本應用程式使用
+        settings.edit()
+                .putString("userID", userID)
+                .commit();
     }
 }

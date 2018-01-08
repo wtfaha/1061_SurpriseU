@@ -39,6 +39,12 @@ public class changeDetail {
 				detailResult.put("result", result);
 				detailResult.put("mention", selectChangeDetail.getString("mention"));
 				detailResult.put("typeID", selectChangeDetail.getString("typeID"));
+				
+				detailResult.put("lowPrice", selectChangeDetail.getString("lowPrice"));
+				detailResult.put("highPrice", selectChangeDetail.getString("highPrice"));
+				detailResult.put("secondHand", selectChangeDetail.getString("secondHand"));
+				detailResult.put("location", selectChangeDetail.getString("location"));
+				detailResult.put("maxPeople", selectChangeDetail.getString("maxPeople"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -112,7 +118,7 @@ public class changeDetail {
 
 	}
 
-	public static InputStream getPhoto(DataSource datasource, String changeID, String typeID) {
+	public static InputStream getPhoto(DataSource datasource, String changeID) {
 		PreparedStatement statement = null;
 		InputStream inputStream = null;
 		Connection conn = null;
@@ -130,26 +136,6 @@ public class changeDetail {
 				System.out.println(blob);
 				if (blob != null) {
 					inputStream = blob.getBinaryStream();
-				} else {
-					resultSet.close();
-					statement.close();
-					System.out.println("1");
-					PreparedStatement defaultStatement = null;
-					String defaultSql = "select defaultPicture from exchangetype where typeID= ? ";
-					defaultStatement = conn.prepareStatement(defaultSql);
-					defaultStatement.setString(1, typeID);
-					System.out.println("2");
-					ResultSet defaultResultSet = defaultStatement.executeQuery();
-					System.out.println("3");
-					if (defaultResultSet.next()) {
-						System.out.println("4");
-						blob = defaultResultSet.getBlob("defaultPicture");
-						inputStream = blob.getBinaryStream();
-						System.out.println("5");
-
-					} else {
-						System.out.println("找不到typeID" + typeID + "的檔案");
-					}
 				}
 				if (resultSet != null)
 					try {

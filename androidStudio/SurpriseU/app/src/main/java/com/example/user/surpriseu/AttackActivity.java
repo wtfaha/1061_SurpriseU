@@ -2,6 +2,7 @@ package com.example.user.surpriseu;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,11 @@ import org.json.JSONObject;
 
 public class AttackActivity extends AppCompatActivity {
 
+    //讀資料
+    private SharedPreferences settings;
+    private static final String data = "DATA";
+    private  String userID;
+
     private EditText nameInput,lowPriceInput,highPriceInput,maxPeopleInput;
     private Spinner typeInput,locationInput;
     private CheckBox agree;
@@ -36,6 +42,10 @@ public class AttackActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attack);
+
+        //讀資料
+        readData();
+
         nameInput=(EditText)findViewById(R.id.nameInput);
         lowPriceInput=(EditText)findViewById(R.id.lowPrice);
         highPriceInput=(EditText)findViewById(R.id.highPrice);
@@ -65,7 +75,7 @@ public class AttackActivity extends AppCompatActivity {
                             secondHand="n";
                     }
                     String maxPeople=maxPeopleInput.getText().toString();
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.137.28:8080/SurpriseU/attackServlet?name="+name+"&type="+type+"&lowPrice="+lowPrice+"&highPrice="+highPrice+"&location="+location+"&secondHand="+secondHand+"&maxPeople="+maxPeople+"",
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://140.121.197.130:8004/SurpriseU/attackServlet?organiser="+userID+"&name="+name+"&type="+type+"&lowPrice="+lowPrice+"&highPrice="+highPrice+"&location="+location+"&secondHand="+secondHand+"&maxPeople="+maxPeople+"",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -127,5 +137,11 @@ public class AttackActivity extends AppCompatActivity {
         intent.setClass(AttackActivity.this, changeDetail.class);
         intent.putExtras(bd);
         startActivity(intent);
+    }
+
+    //讀取資料
+    public void readData(){
+        settings = getSharedPreferences(data,0);
+        userID =  settings.getString("userID", "");
     }
 }

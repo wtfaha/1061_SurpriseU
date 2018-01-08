@@ -1,5 +1,7 @@
 package com.example.user.surpriseu;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -71,6 +73,10 @@ import static java.net.Proxy.Type.HTTP;
 public class Homepage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //讀資料
+    private SharedPreferences settings;
+    private static final String data = "DATA";
+
     //連接後端
     private static RequestQueue queue;
 
@@ -118,6 +124,18 @@ public class Homepage extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
+
+
+        // 主线程不能添加网络访问 方法一：
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        //讀資料
+        readData();
+
 
         //連接後端
         queue = Volley.newRequestQueue(this);       //HTTP Request處理工具，取得volley的request物件
@@ -216,12 +234,17 @@ public class Homepage extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //按下左下角+號的按鈕
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //連到WebView
+                Intent intent = new Intent();
+                intent.setClass(Homepage.this, AttackActivity.class);    //到AttackActivity頁面
+                startActivity(intent);  //開啟AttackActivity活動
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
         });
 
@@ -293,6 +316,12 @@ public class Homepage extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //讀取資料
+    public void readData(){
+        settings = getSharedPreferences(data,0);
+        System.out.println("@@@getSharedPreferences : " + settings.getString("userID", ""));
     }
 
 
@@ -626,11 +655,25 @@ public class Homepage extends AppCompatActivity
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(view.getContext(), "你選擇了" + position, Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(view.getContext(), "你選擇了" + title[position], Toast.LENGTH_SHORT).show();
+
+                    //連到WebView
+                    Intent intent = new Intent();
+                    intent.setClass(parent.getContext(), changeDetail.class);    //到changeDetail頁面
+                    Bundle bundle = new Bundle(); //不同Activity之間的資料傳遞 (Bundle)
+                    bundle.putString("changeID", changeID[position]);
+
+                    System.out.println("傳給changeDetail : changeID = " + changeID[position]);
+                    intent.putExtras(bundle);
+                    startActivity(intent);  //開啟changeDetail活動
+
                 }
             });
         }
     }
+
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
