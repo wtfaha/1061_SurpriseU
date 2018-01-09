@@ -14,13 +14,23 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
-        <TextView
-            android:id="@+id/nowPeople"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="right"
-            android:text="nowPeople" />
+            android:background="#CCCCCC">
+
+            <TextView
+                android:id="@+id/nowPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="right"
+                android:text="目前人數 : 87/100"
+                android:layout_weight="1"
+                android:textAlignment="viewEnd"
+                android:textColor="#3366FF" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,9 +39,10 @@
 
             <ImageView
                 android:id="@+id/picture"
-                android:layout_width="233dp"
+                android:layout_width="173dp"
                 android:layout_height="match_parent"
-                android:text="picture" />
+                android:text="picture"
+                app:srcCompat="@drawable/nopic" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,40 +54,106 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.02"
-                    android:text="location" />
+                    android:text="location"
+                    android:textSize="30sp"
+                    android:paddingLeft="4dp" />
 
                 <TextView
                     android:id="@+id/price"
                     android:layout_width="162dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.02"
-                    android:text="price" />
+                    android:text="price"
+                    android:textSize="30sp"
+                    android:paddingLeft="4dp" />
 
-                <TextView
-                    android:id="@+id/secondHand"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.02">
+
+                    <TextView
+                        android:text="可二手 : "
+                        android:layout_width="94dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView11"
+                        android:textSize="24sp"
+                        android:paddingLeft="4dp" />
+
+                    <TextView
+                        android:id="@+id/secondHand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="是/否"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:text="開團日 : 2018/01/09"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView10"
                     android:layout_weight="0.02"
-                    android:text="secondHand" />
+                    android:paddingLeft="4dp" />
+
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:id="@+id/process"
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/progress"
+            android:id="@+id/imageView3" />
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="進度條"/>
-        <TextView
-            android:id="@+id/mention"
-            android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:text="提醒"/>
+            android:layout_height="wrap_content"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/mention"
+                android:layout_width="246dp"
+                android:layout_height="66dp"
+                android:text="大家一起來交換禮物吧，又是交換禮物的季節到囉囉囉"
+                android:textColor="#3D80CC"
+                android:textSize="18sp"
+                android:paddingLeft="4dp"
+                android:layout_weight="0.91"
+                android:paddingTop="4dp" />
+
+            <Button
+                android:text="悄悄話"
+                android:layout_width="76dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/button2"
+                android:background="#FFCC99"
+                android:textColor="@android:color/white"
+                android:layout_gravity="right|center_vertical"
+                android:textStyle="normal|bold" />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/messageBoard"
             android:layout_width="match_parent"
-            android:layout_height="166dp"
-            android:text="留言板" />
+            android:layout_height="wrap_content"
+            android:text="留言板"
+            android:textColor="#3D80CC"
+            android:textStyle="normal|bold"
+            android:textSize="24sp"
+            android:paddingLeft="4dp"
+            android:background="#99FF99"/>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            app:srcCompat="@drawable/message"
+            android:id="@+id/imageView4"
+            android:background="#99FF99"/>
 
         <Button
                 android:id="@+id/joinButton"
@@ -84,7 +161,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="我要參加" />
+                android:text="我要參加"
+            android:background="#FFCC99"
+            android:textColor="@android:color/white"
+            android:textStyle="normal|bold" />
 
 
 

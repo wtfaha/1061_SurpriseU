@@ -41,7 +41,7 @@ public class changeDetail extends AppCompatActivity {
         price=(TextView)findViewById(R.id.price);
         location=(TextView)findViewById(R.id.location);
         secondHand=(TextView)findViewById(R.id.secondHand);
-        process=(TextView)findViewById(R.id.process);
+        //process=(TextView)findViewById(R.id.process);
         picture=(ImageView)findViewById(R.id.picture);
         messegeBoard=(TextView)findViewById(R.id.messageBoard);
         mention=(TextView)findViewById(R.id.mention);
@@ -86,7 +86,7 @@ public class changeDetail extends AppCompatActivity {
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
+        picture.setScaleType(ImageView.ScaleType.CENTER_CROP);
         picture.setImageBitmap(ImgUtils.getBitmapFromURL("http://140.121.197.130:8004/SurpriseU/changeDetailServlet?state=getPhoto&changeID="+changeID));
     }
 

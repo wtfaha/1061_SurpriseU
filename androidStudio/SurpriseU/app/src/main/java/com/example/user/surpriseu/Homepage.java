@@ -567,8 +567,8 @@ public class Homepage extends AppCompatActivity
             }
 
 
-            final TextView titleTest = (TextView) rootView.findViewById(R.id.item_title);
-            titleTest.setText(String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
+            //final TextView titleTest = (TextView) rootView.findViewById(R.id.item_title);
+            //titleTest.setText(String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
 
             //設定圖片
             gridView = (GridView) rootView.findViewById(R.id.gridview);
